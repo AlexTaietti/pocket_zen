@@ -11,7 +11,7 @@ UNDERLINE_CODE = '4'
 REVERSED_CODE = '7'
 
 
-# turn numbers into actual ansi sequences
+# turn codes into actual ansi sequences
 def wrap_modifier(modifier_code):
     decorator_code = f'{ANSI_START}{modifier_code}{ANSI_END}'
     return decorator_code
