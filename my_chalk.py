@@ -49,12 +49,12 @@ def get_background_color(color):
 
 
 def apply_modifier(string, modifier):
-    pretty_string = f'{modifier}{string}{RESET}'
+    pretty_string = f'{modifier}{string}'
     return pretty_string
 
 
-def add_modifier(modified_string, modifier):
-    new_modified_string = f'{modifier}{modified_string}'
+def reset_modifiers(string):
+    new_modified_string = f'{string}{RESET}'
     return new_modified_string
 
 
@@ -63,7 +63,8 @@ def color_string(string, text_color, background=None):
     pretty_string = apply_modifier(string, color_code)
     if background:
         background_color_code = get_background_color(background)
-        pretty_string = add_modifier(pretty_string, background_color_code)
+        pretty_string = apply_modifier(pretty_string, background_color_code)
+    pretty_string = reset_modifiers(pretty_string)
     return pretty_string
 
 
