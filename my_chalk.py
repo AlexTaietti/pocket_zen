@@ -1,8 +1,8 @@
 from colors import get_colors, get_layer_color_code
 
 # ansi sequence characters
-ANSI_ESCAPE = '\u001b['
-END_CHARACTER = 'm'
+ANSI_START = '\u001b['
+ANSI_END = 'm'
 RESET_CHARACTER = '0'
 
 # text style codes
@@ -12,18 +12,18 @@ REVERSED_CODE = '7'
 
 
 # turn numbers into actual ansi sequences
-def _wrap_modifier(modifier_code):
-    decorator_code = f'{ANSI_ESCAPE}{modifier_code}{END_CHARACTER}'
+def wrap_modifier(modifier_code):
+    decorator_code = f'{ANSI_START}{modifier_code}{ANSI_END}'
     return decorator_code
 
 
 # reset decoration sequence
-RESET = _wrap_modifier(RESET_CHARACTER)
+RESET = wrap_modifier(RESET_CHARACTER)
 
 # font style sequences
-BOLD = _wrap_modifier(BOLD_CODE)
-UNDERLINE = _wrap_modifier(UNDERLINE_CODE)
-REVERSED = _wrap_modifier(REVERSED_CODE)
+BOLD = wrap_modifier(BOLD_CODE)
+UNDERLINE = wrap_modifier(UNDERLINE_CODE)
+REVERSED = wrap_modifier(REVERSED_CODE)
 
 
 # make a list of wrapped ansi sequences ready to be prepended to any unicode string
@@ -32,7 +32,7 @@ def make_color_sequences_for_layer(layer):
     colors = get_colors()
     for color_name, color_code in colors:
         layer_color_code = get_layer_color_code(color_name, layer)
-        color_name_to_ansi[color_name] = _wrap_modifier(layer_color_code)
+        color_name_to_ansi[color_name] = wrap_modifier(layer_color_code)
     return color_name_to_ansi
 
 
@@ -48,22 +48,22 @@ def get_background_color(color):
     return BG_COLOR_SEQUENCES[color]
 
 
-def _apply_modifier(string, modifier):
+def apply_modifier(string, modifier):
     pretty_string = f'{modifier}{string}{RESET}'
     return pretty_string
 
 
-def _add_modifier(modified_string, modifier):
+def add_modifier(modified_string, modifier):
     new_modified_string = f'{modifier}{modified_string}'
     return new_modified_string
 
 
 def color_string(string, text_color, background=None):
     color_code = get_foreground_color(text_color)
-    pretty_string = _apply_modifier(string, color_code)
+    pretty_string = apply_modifier(string, color_code)
     if background:
         background_color_code = get_background_color(background)
-        pretty_string = _add_modifier(pretty_string, background_color_code)
+        pretty_string = add_modifier(pretty_string, background_color_code)
     return pretty_string
 
 
