@@ -1,4 +1,4 @@
-from colors import get_background_color, get_foreground_color
+from colors import get_colors, get_layer_color_code
 
 # ansi sequence characters
 ANSI_ESCAPE = '\u001b['
@@ -26,6 +26,28 @@ UNDERLINE = _wrap_modifier(UNDERLINE_CODE)
 REVERSED = _wrap_modifier(REVERSED_CODE)
 
 
+# make a list of wrapped ansi sequences ready to be prepended to any unicode string
+def make_color_sequences_for_layer(layer):
+    color_name_to_ansi = dict()
+    colors = get_colors()
+    for color_name, color_code in colors:
+        layer_color_code = get_layer_color_code(color_name, layer)
+        color_name_to_ansi[color_name] = _wrap_modifier(layer_color_code)
+    return color_name_to_ansi
+
+
+FG_COLOR_SEQUENCES = make_color_sequences_for_layer('fore')
+BG_COLOR_SEQUENCES = make_color_sequences_for_layer('back')
+
+
+def get_foreground_color(color):
+    return FG_COLOR_SEQUENCES[color]
+
+
+def get_background_color(color):
+    return BG_COLOR_SEQUENCES[color]
+
+
 def _apply_modifier(string, modifier):
     pretty_string = f'{modifier}{string}{RESET}'
     return pretty_string
@@ -38,12 +60,10 @@ def _add_modifier(modified_string, modifier):
 
 def color_string(string, text_color, background=None):
     color_code = get_foreground_color(text_color)
-    color_modifier = _wrap_modifier(color_code)
-    pretty_string = _apply_modifier(string, color_modifier)
+    pretty_string = _apply_modifier(string, color_code)
     if background:
         background_color_code = get_background_color(background)
-        background_modifier = _wrap_modifier(background_color_code)
-        pretty_string = _add_modifier(pretty_string, background_modifier)
+        pretty_string = _add_modifier(pretty_string, background_color_code)
     return pretty_string
 
 
