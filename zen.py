@@ -1,11 +1,11 @@
 import random
 import constants
 
-from chalk import color_string
+from chalk import modify_string
 
 
-def wrap_line(line, text_color='cyan', background_color='black'):
-    line = color_string(line, text_color, background_color)
+def wrap_line(line, text_color='cyan', background_color='black', text_style=None):
+    line = modify_string(line, text_color, background_color, text_style)
     line = f"{line}{constants.END_OF_LINE}"
     return line
 
@@ -33,9 +33,11 @@ def make_frame_horizontal_line(line_width, frame_x):
 
 
 def make_text_line(line, padding, frame_y):
+    frame_y = modify_string(frame_y, 'cyan', 'black')
     pad = repeat_char(' ', padding)
-    line = f"{frame_y}{pad}{line}{pad}{frame_y}"
-    line = wrap_line(line)
+    pad = modify_string(pad, 'cyan', 'black')
+    text = modify_string(line, 'cyan', 'black', 'underline')
+    line = f"{frame_y}{pad}{text}{pad}{frame_y}{constants.END_OF_LINE}"
     return line
 
 
