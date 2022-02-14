@@ -2,6 +2,8 @@
 
 ### Advice so good I had to frame it!
 
+<br />
+
 This simple script prints a random entry from the "zen of python" to the console
 
 <p align="center"><img src="./preview/green.png" width="60%"/></p>
