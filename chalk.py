@@ -12,8 +12,3 @@ def modify_string(string, text_color=None, background=None, text_style=None):
         style_code = get_text_style_code(text_style)
         string = apply_modifier(string, style_code)
     return string
-
-
-if __name__ == '__main__':
-    s = modify_string('=============', 'black', background='blue')
-    print(s)
