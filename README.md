@@ -4,7 +4,7 @@
 
 <br />
 
-This simple script prints a random entry from the "zen of python" to the console
+This simple script prints a random entry from the "zen of python" in the terminal
 
 <p align="center"><img src="./preview/green.png" width="60%"/></p>
 
